@@ -1,0 +1,92 @@
+{
+  "lock": false,
+  "tasks": {
+    "check": "deno fmt --check && deno lint && deno check **/*.ts && deno check **/*.tsx",
+    "format": "deno fmt **/*.tsx && deno fmt **/*.ts",
+    "cli": "echo \"import '\\$fresh/src/dev/cli.ts'\" | deno run --unstable -A -",
+    "manifest": "deno task cli manifest $(pwd)",
+    "start": "deno run -A --watch=static/,routes/ dev.ts",
+    "build": "deno run -A dev.ts build",
+    "preview": "deno run -A main.ts",
+    "update": "deno run -A -r https://fresh.deno.dev/update .",
+    "generate": "deno run -A npm:prismic-ts-codegen@0.1.19",
+    "esm:add": "deno run -A https://esm.sh/v135 add",
+    "esm:update": "deno run -A https://esm.sh/v135 update",
+    "esm:remove": "deno run -A https://esm.sh/v135 remove"
+  },
+  "lint": {
+    "rules": {
+      "tags": [
+        "fresh",
+        "recommended"
+      ]
+    },
+    "exclude": [
+      "**/_fresh/*",
+      "types.generated.ts",
+      "node_modules"
+    ]
+  },
+  "imports": {
+    "$std/": "https://deno.land/std@0.211.0/",
+    "$dotenv": "https://deno.land/std@0.214.0/dotenv/mod.ts",
+    "$fresh/": "https://deno.land/x/fresh@1.6.3/",
+    "@preact/signals-core": "https://esm.sh/*@preact/signals-core@1.5.0",
+    "@preact/signals": "https://esm.sh/*@preact/signals@1.2.1",
+    "imgix-url-builder": "https://esm.sh/imgix-url-builder@0.0.4",
+    "preact": "https://esm.sh/preact@10.19.2",
+    "preact/": "https://esm.sh/preact@10.19.2/",
+    "@prismicio/client": "https://esm.sh/v135/*@prismicio/client@7.3.1",
+    "@prismicio/client/": "https://esm.sh/v135/*@prismicio/client@7.3.1/",
+    "tailwindcss": "npm:tailwindcss@3.3.5",
+    "tailwindcss/": "npm:/tailwindcss@3.3.5/",
+    "tailwindcss/plugin": "npm:/tailwindcss@3.3.5/plugin.js",
+    "$fresh-session": "https://deno.land/x/fresh_session@0.2.4/mod.ts",
+    "/": "./",
+    "./": "./"
+  },
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "jsxImportSource": "preact",
+    "types": [
+      "./types.generated.ts"
+    ]
+  },
+  "nodeModulesDir": true,
+  "fmt": {
+    "semiColons": false,
+    "singleQuote": true,
+    "exclude": [
+      "**/_fresh/*",
+      "node_modules",
+      ".git",
+      "*generated.ts"
+    ]
+  },
+  "scopes": {
+    "https://esm.sh/v135/": {
+      "@alloc/quick-lru": "https://esm.sh/v135/@alloc/quick-lru@5.2.0",
+      "arg": "https://esm.sh/v135/arg@5.0.2",
+      "chokidar": "https://esm.sh/v135/chokidar@3.6.0",
+      "didyoumean": "https://esm.sh/v135/didyoumean@1.2.2",
+      "dlv": "https://esm.sh/v135/dlv@1.1.3",
+      "fast-glob": "https://esm.sh/v135/fast-glob@3.3.2",
+      "glob-parent": "https://esm.sh/v135/glob-parent@6.0.2",
+      "is-glob": "https://esm.sh/v135/is-glob@4.0.3",
+      "jiti": "https://esm.sh/v135/jiti@1.21.0",
+      "lilconfig": "https://esm.sh/v135/lilconfig@2.1.0",
+      "micromatch": "https://esm.sh/v135/micromatch@4.0.5",
+      "normalize-path": "https://esm.sh/v135/normalize-path@3.0.0",
+      "object-hash": "https://esm.sh/v135/object-hash@3.0.0",
+      "picocolors": "https://esm.sh/v135/picocolors@1.0.0",
+      "postcss-import": "https://esm.sh/v135/postcss-import@15.1.0",
+      "postcss-js": "https://esm.sh/v135/postcss-js@4.0.1",
+      "postcss-load-config": "https://esm.sh/v135/postcss-load-config@4.0.2",
+      "postcss-nested": "https://esm.sh/v135/postcss-nested@6.0.1",
+      "postcss-selector-parser": "https://esm.sh/v135/postcss-selector-parser@6.0.15",
+      "postcss": "https://esm.sh/v135/postcss@8.4.35",
+      "resolve": "https://esm.sh/v135/resolve@1.22.2",
+      "sucrase": "https://esm.sh/v135/sucrase@3.35.0"
+    }
+  }
+}
