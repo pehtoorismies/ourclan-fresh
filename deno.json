@@ -36,6 +36,7 @@
     "imgix-url-builder": "https://esm.sh/imgix-url-builder@0.0.4",
     "preact": "https://esm.sh/preact@10.19.2",
     "preact/": "https://esm.sh/preact@10.19.2/",
+    "preact-render-to-string": "https://esm.sh/preact-render-to-string@5.2.0?deps=preact@10.19.2",
     "@prismicio/client": "https://esm.sh/v135/*@prismicio/client@7.3.1",
     "@prismicio/client/": "https://esm.sh/v135/*@prismicio/client@7.3.1/",
     "tailwindcss": "npm:tailwindcss@3.3.5",
