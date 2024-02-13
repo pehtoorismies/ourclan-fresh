@@ -2,7 +2,7 @@ import { defineRoute, Handlers, PageProps } from '$fresh/server.ts'
 import { asHTML, Content, createClient } from '@prismicio/client'
 import { Navigation } from '/components/Navigation.tsx'
 import { getCookies } from '$std/http/cookie.ts'
-import { client } from '/utils/cms.ts'
+import { getClient } from '/utils/cms.ts'
 import { CtxState } from '/types/ctx-state.ts'
 import { WithSession } from '$fresh-session'
 
@@ -37,7 +37,7 @@ const mapToBlock = (
 
 export const handler: Handlers<Content, CtxState> = {
   async GET(req, ctx) {
-    const [front] = await client.getAllByType('front-page')
+    const [front] = await getClient().getAllByType('front-page')
     const displayable = mapToBlock(front.data)
     const cookies = getCookies(req.headers)
 
@@ -71,7 +71,7 @@ const FrontPageBlock = ({ title, descriptionHMTL, image }: Displayable) => {
 
 export default defineRoute<WithSession>(async (req, ctx) => {
   const { session } = ctx.state
-  const [front] = await client.getAllByType('front-page')
+  const [front] = await getClient().getAllByType('front-page')
   const blocks = mapToBlock(front.data)
 
   return (

@@ -1,6 +1,6 @@
 import { defineRoute } from '$fresh/server.ts'
 import { Navigation } from '/components/Navigation.tsx'
-import { client } from '/utils/cms.ts'
+import { getClient } from '/utils/cms.ts'
 import { AlbumDocument } from '/types.generated.ts'
 import { ImageCard } from '/components/ImageCard.tsx'
 import { WithSession } from '$fresh-session'
@@ -37,7 +37,7 @@ const formatAlbum = (album: AlbumDocument): Album => {
 
 const loadAlbums = async (slug: string) => {
   try {
-    const result = await client.getByUID('album', slug)
+    const result = await getClient().getByUID('album', slug)
     return result
   } catch (e) {
     return undefined

@@ -1,0 +1,31 @@
+name: Pull Request
+on: 
+  pull_request:
+    branches: main
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    environment: development
+    env:
+        PROJECT_ID: pr-${{ github.event.pull_request.id }}
+        DENO_DEPLOY_TOKEN: ${{ secrets.DENO_DEPLOY_TOKEN }}
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v4
+      - name: Install Deno
+        uses: denoland/setup-deno@v1
+        with:
+          deno-version: v1.40.3
+      - name: Check
+        run: deno task check
+      - name: Build step
+        run: deno task build
+      - name: Install
+        run: deno install -Arf https://deno.land/x/deploy/deployctl.ts
+      - name: Deploy to dev
+        run: deployctl deploy -p=tuomaala-dev
+
