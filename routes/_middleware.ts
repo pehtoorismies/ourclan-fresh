@@ -1,5 +1,4 @@
 import { FreshContext } from '$fresh/server.ts'
-
 import { cookieSession, WithSession } from '$fresh-session'
 
 const DAY = 60 * 60 * 24

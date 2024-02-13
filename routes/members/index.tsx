@@ -2,14 +2,11 @@ import type { Handlers, PageProps } from '$fresh/server.ts'
 
 import { Navigation } from '/components/Navigation.tsx'
 import { getEnvironmentVariable } from '/utils/get-environment-variable.ts'
-
 import { WithSession } from '$fresh-session'
 
 interface Data {
   errorMessage: string | undefined
 }
-
-const APP_PASSWORD = getEnvironmentVariable('PASSWORD')
 
 export const handler: Handlers<Data, WithSession> = {
   GET(req, ctx) {
@@ -36,7 +33,7 @@ export const handler: Handlers<Data, WithSession> = {
       })
     }
 
-    if (password === APP_PASSWORD) {
+    if (password === getEnvironmentVariable('PASSWORD')) {
       session.set('isLoggedIn', true)
       return new Response(null, {
         status: 303, // "See Other"

@@ -1,6 +1,6 @@
 import { defineRoute } from '$fresh/server.ts'
 import { Navigation } from '/components/Navigation.tsx'
-import { client } from '/utils/cms.ts'
+import { getClient } from '/utils/cms.ts'
 import { AlbumDocument } from '/types.generated.ts'
 import { ImageCard } from '/components/ImageCard.tsx'
 import { WithSession } from '$fresh-session'
@@ -45,7 +45,7 @@ export default defineRoute<WithSession>(async (req, ctx) => {
     return Response.redirect(url)
   }
 
-  const result = await client.getAllByType('album')
+  const result = await getClient().getAllByType('album')
   const albums = formatAlbums(result)
 
   return (
