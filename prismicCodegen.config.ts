@@ -7,7 +7,9 @@ export const getEnvironmentVariable = (envVar: string): string => {
 }
 
 const repositoryName = getEnvironmentVariable('PRISMIC_REPO')
-const customTypesAPIToken = getEnvironmentVariable('CUSTOM_TYPES_API_TOKEN')
+const customTypesAPIToken = getEnvironmentVariable(
+  'PRISMIC_CUSTOM_TYPES_API_TOKEN',
+)
 
 const config = {
   output: './types.generated.ts',
