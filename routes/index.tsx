@@ -50,17 +50,17 @@ export const handler: Handlers<Content, CtxState> = {
 
 const FrontPageBlock = ({ title, descriptionHMTL, image }: Displayable) => {
   return (
-    <div className='my-4'>
-      <div className='flex flex-wrap justify-center items-center'>
-        <div className='grow w-96'>
-          <h2 className='font-playfair text-2xl my-4'>{title}</h2>
+    <div class='my-4'>
+      <div class='flex flex-wrap justify-center items-center'>
+        <div class='grow w-96'>
+          <h2 class='font-playfair text-2xl my-4'>{title}</h2>
           <div
-            className='bg-white mr-4 cms'
+            class='bg-white mr-4 cms'
             dangerouslySetInnerHTML={{ __html: descriptionHMTL }}
           />
         </div>
         <img
-          className='my-4 flex-none w-96 border-2 p-2'
+          class='my-4 flex-none w-96 border-2 p-2'
           src={image.url}
           alt='Vaakuna'
         />
@@ -78,25 +78,25 @@ export default defineRoute<WithSession>(async (req, ctx) => {
     <>
       <Navigation isLoggedIn={!!session.get('isLoggedIn')} />
       <main>
-        <div className='bg-gradient-to-r from-slate-200 to-slate-400 dark:bg-zinc-800 p-4'>
-          <div className='container mx-auto'>
-            <div className='flex justify-between items-center h-50 flex-wrap'>
+        <div class='bg-gradient-to-r from-slate-200 to-slate-400 dark:bg-zinc-800 p-4'>
+          <div class='container mx-auto'>
+            <div class='flex justify-between items-center h-50 flex-wrap'>
               <img
-                className='w-20'
+                class='w-20'
                 src='images/vaakuna_small.png'
                 alt='Vaakuna'
               />
-              <h1 className='font-playfair text-3xl'>Suvun historiaa</h1>
+              <h1 class='font-playfair text-3xl'>Suvun historiaa</h1>
               <img
-                className='w-20'
+                class='w-20'
                 src='/images/vaakuna.png'
                 alt='Vaakuna'
               />
             </div>
           </div>
         </div>
-        <div className='bg-white my-3'>
-          <div className='container mx-auto p-4 '>
+        <div class='bg-white my-3'>
+          <div class='container mx-auto p-4 '>
             {blocks.map((b) => {
               return <FrontPageBlock key={b.title} {...b} />
             })}

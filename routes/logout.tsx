@@ -22,12 +22,12 @@ export default defineRoute<WithSession>((req, ctx) => {
     <div>
       <Navigation isLoggedIn={false} />
       <main>
-        <div className='flex flex-col items-center'>
-          <h1 className='text-xl text-center p-4'>
+        <div class='flex flex-col items-center'>
+          <h1 class='text-xl text-center p-4'>
             Olet kirjautunut ulos
           </h1>
           <a href='/'>
-            <button className='bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded'>
+            <button class='bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded'>
               Siiry etusivulle
             </button>
           </a>
