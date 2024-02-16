@@ -51,8 +51,8 @@ export default defineRoute<WithSession>(async (req, ctx) => {
   return (
     <div>
       <Navigation isLoggedIn />
-      <h1 className='text-3xl py-4'>Albumit</h1>
-      <div className='grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 p-2'>
+      <h1 class='text-3xl py-4'>Albumit</h1>
+      <div class='grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 p-2'>
         {albums.map(({ title, uid, image }) => (
           <ImageCard
             key={uid}

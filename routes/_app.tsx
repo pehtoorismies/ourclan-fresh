@@ -38,7 +38,7 @@ export default function App({ Component }: PageProps) {
         <link rel='stylesheet' href='/styles.css' />
       </head>
       <body>
-        <div className='container mx-auto max-w-screen-lg'>
+        <div class='container mx-auto max-w-screen-lg'>
           <Component />
         </div>
       </body>
