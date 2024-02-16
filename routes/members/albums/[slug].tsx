@@ -6,12 +6,19 @@ import { ImageCard } from '/components/ImageCard.tsx'
 import { WithSession } from '$fresh-session'
 import * as uuid from 'https://deno.land/std@0.207.0/uuid/mod.ts'
 import IconX from 'https://deno.land/x/tabler_icons_tsx@0.0.5/tsx/x.tsx'
+import IconChevronLeft from 'https://deno.land/x/tabler_icons_tsx@0.0.5/tsx/chevron-left.tsx'
+import IconChevronRight from 'https://deno.land/x/tabler_icons_tsx@0.0.5/tsx/chevron-right.tsx'
 
 interface AlbumImage {
   id: string
   title: string
   image: {
-    url: string
+    small: {
+      url: string
+    }
+    medium: {
+      url: string
+    }
   }
 }
 
@@ -34,7 +41,12 @@ const formatAlbum = (album: AlbumDocument): Album => {
         id: img.image.id ?? uuid.v1.generate() as string,
         title: img.imagetitle[0]?.text ?? '',
         image: {
-          url: img.image.small.url ?? '',
+          small: {
+            url: img.image.small.url ?? '',
+          },
+          medium: {
+            url: img.image.large.url ?? '',
+          },
         },
       }
     }),
@@ -83,7 +95,7 @@ export default defineRoute<WithSession>(async (req, ctx) => {
           return (
             <ImageCard
               title={title}
-              imageUrl={image.url}
+              imageUrl={image.small.url}
               href={`#${id}`}
             />
           )
@@ -93,25 +105,33 @@ export default defineRoute<WithSession>(async (req, ctx) => {
         return (
           <div
             id={id}
-            class='hidden target:block fixed inset-0 p-10 bg-black/90 overflow-auto z-[10]'
+            class='hidden target:block fixed inset-0 p-1 bg-black/90 overflow-auto z-[10]'
           >
             <a
               href='#'
-              class='bg-white p-3 text-black absolute right-0 top-0 m-3'
+              class='bg-white p-3 text-black absolute right-0 top-0 m-3 z-[11]'
             >
               <IconX class='w-6 h-6' />
             </a>
-            <div class='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center'>
+            <div class='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center w-screen'>
               <img
-                src={image.url}
-                alt='Gambar Kucing'
+                src={image.medium.url}
+                alt={title}
               />
               <div class='text-white'>{title}</div>
-              <a href='#'>
-                <button class='flex-1 bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded my-3'>
-                  Sulje
-                </button>
-              </a>
+              <div class='flex items-center'>
+                <a href='#'>
+                  <IconChevronLeft class='mx-5 w-10 h-10 bg-yellow-500 hover:bg-yellow-700 text-white rounded my-3' />
+                </a>
+                <a href='#'>
+                  <button class='flex-1 bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded'>
+                    Sulje
+                  </button>
+                </a>
+                <a href='#'>
+                  <IconChevronRight class='mx-5 w-10 h-10 bg-yellow-500 hover:bg-yellow-700 text-white rounded my-3' />
+                </a>
+              </div>
             </div>
           </div>
         )
