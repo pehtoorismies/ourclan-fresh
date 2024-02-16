@@ -19,9 +19,9 @@ const formatAlbums = (albums: AlbumDocument[]): Album[] => {
     const bNum = Number(b.data.order?.toString())
 
     if (aNum > bNum) {
-      return -1
-    } else if (aNum < bNum) {
       return 1
+    } else if (aNum < bNum) {
+      return -1
     } else {
       return 0
     }
