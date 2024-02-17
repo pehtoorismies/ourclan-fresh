@@ -8,6 +8,12 @@ import * as uuid from 'https://deno.land/std@0.207.0/uuid/mod.ts'
 import IconX from 'https://deno.land/x/tabler_icons_tsx@0.0.5/tsx/x.tsx'
 import IconChevronLeft from 'https://deno.land/x/tabler_icons_tsx@0.0.5/tsx/chevron-left.tsx'
 import IconChevronRight from 'https://deno.land/x/tabler_icons_tsx@0.0.5/tsx/chevron-right.tsx'
+import classnames from 'https://deno.land/x/classnames@0.1.1/index.ts'
+
+interface Dimensions {
+  height: number
+  width: number
+}
 
 interface AlbumImage {
   id: string
@@ -15,11 +21,16 @@ interface AlbumImage {
   image: {
     small: {
       url: string
+      dimensions: Dimensions
     }
     medium: {
       url: string
+      dimensions: Dimensions
+      bg: string
     }
   }
+  nextImageId: string | undefined
+  prevImageId: string | undefined
 }
 
 interface Album {
@@ -30,24 +41,42 @@ interface Album {
   images: AlbumImage[]
 }
 
+const getBgImageStyle = (url: string) => `bg-[url('${url}')]`
+
 const formatAlbum = (album: AlbumDocument): Album => {
+  const getImageId = (index: number) => {
+    const id = album.data.images[index]?.image?.id
+    return id ?? undefined
+  }
+
   return {
     title: album.data.albumtitle[0]?.text ?? '',
     image: {
       url: album.data.mainimage.small.url ?? '',
     },
-    images: album.data.images.map((img) => {
+    images: album.data.images.map((img, index) => {
       return {
         id: img.image.id ?? uuid.v1.generate() as string,
         title: img.imagetitle[0]?.text ?? '',
         image: {
           small: {
+            dimensions: {
+              height: img.image.small.dimensions?.height ?? 0,
+              width: img.image.small.dimensions?.width ?? 0,
+            },
             url: img.image.small.url ?? '',
           },
           medium: {
-            url: img.image.large.url ?? '',
+            dimensions: {
+              height: img.image.medium.dimensions?.height ?? 0,
+              width: img.image.medium.dimensions?.width ?? 0,
+            },
+            url: img.image.medium.url ?? '',
+            bg: getBgImageStyle(img.image.medium.url ?? ''),
           },
         },
+        nextImageId: getImageId(index + 1),
+        prevImageId: getImageId(index - 1),
       }
     }),
   }
@@ -66,9 +95,10 @@ export default defineRoute<WithSession>(async (req, ctx) => {
   const { session } = ctx.state
 
   if (!session.get('isLoggedIn')) {
-    const url = new URL(req.url)
-    url.pathname = '/album'
-    return Response.redirect(url)
+    return new Response(undefined, {
+      status: 302,
+      headers: { Location: '/members' },
+    })
   }
 
   const result = await loadAlbums(ctx.params.slug)
@@ -78,7 +108,7 @@ export default defineRoute<WithSession>(async (req, ctx) => {
 
   const album = formatAlbum(result)
 
-  const bgImage = `bg-[url('${album.image.url}')]`
+  const bgImage = getBgImageStyle(album.image.url)
 
   return (
     <>
@@ -101,35 +131,42 @@ export default defineRoute<WithSession>(async (req, ctx) => {
           )
         })}
       </div>
-      {album.images.map(({ title, image, id }) => {
+
+      {album.images.map(({ title, image, id, nextImageId, prevImageId }) => {
         return (
           <div
             id={id}
-            class='hidden target:block fixed inset-0 p-1 bg-black/90 overflow-auto z-[10]'
+            class='hidden target:block fixed inset-0 bg-black/90 z-[10]'
           >
             <a
               href='#'
-              class='bg-white p-3 text-black absolute right-0 top-0 m-3 z-[11]'
+              class='bg-yellow-500 p-3 text-black absolute right-0 top-0 m-3 z-[13] rounded'
             >
               <IconX class='w-6 h-6' />
             </a>
-            <div class='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center w-screen'>
-              <img
-                src={image.medium.url}
-                alt={title}
-              />
-              <div class='text-white'>{title}</div>
-              <div class='flex items-center'>
-                <a href='#'>
-                  <IconChevronLeft class='mx-5 w-10 h-10 bg-yellow-500 hover:bg-yellow-700 text-white rounded my-3' />
+            <div
+              style={`background-image: url("${image.medium.url}");`}
+              class='h-[100vh] bg-center bg-no-repeat bg-contain bg-origin-content flex flex-col items-center py-5'
+            >
+              <div class='text-white bg-black/50 px-2 py-1 rounded-sm '>
+                {title}
+              </div>
+              <div class='flex-1 w-full items-center justify-between flex'>
+                <a
+                  href={`#${prevImageId}`}
+                  class={`${
+                    classnames({ 'invisible': !prevImageId })
+                  } py-6 pr-8 hover:text-slate-400  text-white`}
+                >
+                  <IconChevronLeft class='ml-1 md:w-10 md:h-10 rounded my-3' />
                 </a>
-                <a href='#'>
-                  <button class='flex-1 bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded'>
-                    Sulje
-                  </button>
-                </a>
-                <a href='#'>
-                  <IconChevronRight class='mx-5 w-10 h-10 bg-yellow-500 hover:bg-yellow-700 text-white rounded my-3' />
+                <a
+                  href={`#${nextImageId}`}
+                  class={`${
+                    classnames({ 'invisible': !nextImageId })
+                  } py-6 pl-8 hover:text-slate-400 text-white`}
+                >
+                  <IconChevronRight class='mr-1 md:w-10 md:h-10  rounded my-3' />
                 </a>
               </div>
             </div>
