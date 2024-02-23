@@ -41,7 +41,7 @@ export default defineRoute<WithSession>(async (req, ctx) => {
 
   if (!session.get('isLoggedIn')) {
     const url = new URL(req.url)
-    url.pathname = '/album'
+    url.pathname = '/members'
     return Response.redirect(url)
   }
 
